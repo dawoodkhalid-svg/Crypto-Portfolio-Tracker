@@ -1,41 +1,46 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// Express application configuration
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
-var indexRouter = require('./server/routes/index');
-var usersRouter = require('./server/routes/users');
+// Initialize Express app
+const app = express();
 
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// View engine setup
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware configuration
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Static files configuration
+app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, '../../node_modules')));
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Import routes
+const cryptoRoutes = require('../routes/crypto.routes');
+
+// Use routes
+app.use('/', cryptoRoutes);
+
+// 404 Error handler
+app.use((req, res) => {
+  res.status(404).render('error', {
+    title: '404 - Page Not Found',
+    message: 'The page you are looking for does not exist.'
+  });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// General error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('error', {
+    title: 'Error',
+    message: 'Something went wrong!'
+  });
 });
 
 module.exports = app;
