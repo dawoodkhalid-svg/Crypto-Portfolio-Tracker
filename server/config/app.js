@@ -1,4 +1,13 @@
-// Express application configuration
+
+require('dotenv').config(); //Load environment variables
+
+
+const connectDB = require('./db'); //Import database configuration
+
+
+connectDB(); //Connect to MongoDB
+
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -18,7 +27,6 @@ app.use(methodOverride('_method'));
 
 // Static files configuration
 app.use(express.static(path.join(__dirname, '../../public')));
-app.use(express.static(path.join(__dirname, '../../node_modules')));
 
 // Import routes
 const cryptoRoutes = require('../routes/crypto.routes');
@@ -43,4 +51,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-module.exports = app;
+module.exports = app; //Export the app

@@ -1,23 +1,13 @@
-// Database configuration and connection
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); //Import Mongoose library
 
-// MongoDB connection URI from environment variables
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/crypto-tracker';
-
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-// Get the connection
-const db = mongoose.connection;
-
-// Handle connection events
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Successfully connected to MongoDB');
-});
-
-// Export mongoose instance
-module.exports = mongoose;
+module.exports = () => { // Export a function to connect to MongoDB
+ 
+  mongoose.connect(process.env.MONGO_URI, { // MongoDB connection options
+    useNewUrlParser: true, //Updated option name
+    useUnifiedTopology: true //Updated option name
+  })
+  
+  .then(() => console.log('MongoDB Connected!')) //Successful connection
+  
+  .catch((err) => console.log('MongoDB ERROR: ', err)); //Catch connection error
+};

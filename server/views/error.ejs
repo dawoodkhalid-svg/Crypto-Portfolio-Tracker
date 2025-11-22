@@ -1,3 +1,33 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!-- header include -->
+<%- include('partials/header') %>
+
+    <!-- main container -->
+    <div class="container">
+
+        <!-- error page wrapper -->
+        <div class="error-page">
+
+            <!-- error content -->
+            <div class="error-content">
+                <h1 class="error-title">⚠️ Oops!</h1>
+
+                <!-- error title -->
+                <h2>
+                    <%= title %>
+                </h2>
+
+                <!-- error message -->
+                <p class="error-message">
+                    <%= message %>
+                </p>
+
+                <!-- back home button -->
+                <a href="/" class="btn btn-primary">Go Back Home</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- footer include -->
+    <%- include('partials/footer') %>

@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Crypto = require('../model/crypto');
 
-// Home page - Display all cryptos
+//Home page: Display all cryptos
 router.get('/', async (req, res) => {
   try {
     const cryptos = await Crypto.find().sort({ createdAt: -1 });
@@ -21,11 +21,9 @@ router.get('/', async (req, res) => {
 });
 
 
-
-
 // API Routes for CRUD operations
 
-// Create - Add new crypto
+// Create: Add new crypto
 router.post('/api/crypto', async (req, res) => {
   try {
     const crypto = new Crypto({
@@ -45,7 +43,7 @@ router.post('/api/crypto', async (req, res) => {
   }
 });
 
-// Read - Get all cryptos (API)
+// Read: Get all cryptos (API)
 router.get('/api/crypto', async (req, res) => {
   try {
     const cryptos = await Crypto.find().sort({ createdAt: -1 });
@@ -56,7 +54,7 @@ router.get('/api/crypto', async (req, res) => {
   }
 });
 
-// Read - Get single crypto by ID
+// Read : Get single crypto by ID
 router.get('/api/crypto/:id', async (req, res) => {
   try {
     const crypto = await Crypto.findById(req.params.id);
@@ -70,7 +68,7 @@ router.get('/api/crypto/:id', async (req, res) => {
   }
 });
 
-// Update - Edit crypto
+// Update: Edit crypto
 router.put('/api/crypto/:id', async (req, res) => {
   try {
     const crypto = await Crypto.findByIdAndUpdate(
@@ -97,7 +95,7 @@ router.put('/api/crypto/:id', async (req, res) => {
   }
 });
 
-// Delete - Remove crypto
+// Delete: Remove crypto
 router.delete('/api/crypto/:id', async (req, res) => {
   try {
     const crypto = await Crypto.findByIdAndDelete(req.params.id);
