@@ -4,24 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Page title is injected dynamically from EJS -->
     <title>
-        
         <%= title %>
     </title>
-    <!-- Main stylesheet for layout + theming -->
     <link rel="stylesheet" href="/content/style.css">
 </head>
 
 <body>
-    <!-- Top navigation bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <!-- App title/logo that also acts as a home button -->
+            <!-- Brand/Home -->
             <a href="/" class="nav-brand">💰 Crypto Tracker</a>
-            <!-- Simple nav menu (only one link for now) -->
+
+            <!-- Updated auth-aware menu -->
             <ul class="nav-menu">
                 <li><a href="/" class="nav-link">Home</a></li>
+
+                <% if (user) { %>
+                    <!-- User logged in -->
+                    <li>
+                        <span class="nav-link">
+                            <% if (user.avatar) { %>
+                                <img src="<%= user.avatar %>" alt="Avatar" class="nav-avatar">
+                                <% } %>
+                                    <%= user.displayName %>
+                        </span>
+                    </li>
+                    <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+
+                    <% } else { %>
+                        <!-- Not logged in -->
+                        <li><a href="/auth/google" class="nav-link">🔐 Login with Google</a></li>
+                        <li><a href="/auth/github" class="nav-link">🔐 Login with GitHub</a></li>
+
+                        <% } %>
             </ul>
         </div>
     </nav>

@@ -1,5 +1,31 @@
 // Crypto Portfolio Tracker - Client-side JavaScript
 // Simple CRUD operations using fetch API
+var isAuthenticated = false;
+
+// Check if user is logged in
+function checkAuth() {
+    fetch('/auth/status')
+        .then(res => res.json())
+        .then(data => {
+            isAuthenticated = data.authenticated;
+            if (!isAuthenticated) {
+                disableForm();
+            }
+        });
+}
+
+// Disable form for non-logged in users
+function disableForm() {
+    var form = document.querySelector('.form-container');
+    form.style.opacity = '0.6';
+    form.style.pointerEvents = 'none';
+    var msg = document.createElement('p');
+    msg.style.cssText = 'color: #dc3545; font-weight: bold; text-align: center; margin-top: 1rem;';
+    msg.textContent = '🔒 Please login to add/edit cryptocurrencies';
+    form.appendChild(msg);
+}
+
+checkAuth();
 
 // Wait for page to load
 document.addEventListener('DOMContentLoaded', function() {
@@ -62,7 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   //CREATE: Add new crypto
+
   function createCrypto(data) {
+    if (!isAuthenticated) {
+        alert('Please login to add cryptocurrencies');
+        return;
+    }
     fetch('/api/crypto', {
       method: 'POST',
       headers: {
@@ -162,6 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
   
   //UPDATE: Edits crypto (load into form)
   window.editCrypto = function(id) {
+    if (!isAuthenticated) {
+        alert('Please login to edit cryptocurrencies');
+        return;
+    }
     fetch('/api/crypto/' + id)
     .then(function(response) {
       return response.json();
@@ -214,6 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   //DELETE: Remove crypto
   window.deleteCrypto = function(id) {
+    //check for authentication before deleting cryptocurrencies   
+    if (!isAuthenticated) {
+        alert('Please login to delete cryptocurrencies');
+        return;
+    }
     //Confirm before delete
     if (!confirm('Are you sure you want to delete this cryptocurrency?')) {
       return;

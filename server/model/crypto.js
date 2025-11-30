@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 
 // Define Crypto Schema
 const cryptoSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   // Cryptocurrency name (e.g. Bitcoin, Ethereum, etc.)
   name: {
+    
     type: String,
     required: [true, 'Cryptocurrency name is required'],
     trim: true
